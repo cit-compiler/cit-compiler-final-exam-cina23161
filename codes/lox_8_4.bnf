@@ -1,1 +1,36 @@
-// このファイルに指示されたBNFを記述する
+// このファイルに指示されたBNFを記述するprogram        -> declaration* EOF ;
+
+declaration    -> varDecl
+               | statement ;
+
+statement      -> exprStmt
+               | printStmt ;
+
+varDecl        -> "var" IDENTIFIER ( "=" expression )? ";" ;
+
+exprStmt       -> expression ";" ;
+printStmt      -> "print" expression ";" ;
+
+expression     -> assignment ;
+
+assignment     -> IDENTIFIER "=" assignment
+               | equality ;
+
+equality       -> comparison ( ( "!=" | "==" ) comparison )* ;
+comparison     -> term ( ( ">" | ">=" | "<" | "<=" ) term )* ;
+term           -> factor ( ( "-" | "+" ) factor )* ;
+factor         -> unary ( ( "/" | "*" ) unary )* ;
+
+unary          -> ( "!" | "-" ) unary
+               | call ;
+
+call           -> primary ( "(" arguments? ")" )* ;
+arguments      -> expression ( "," expression )* ;
+
+primary        -> NUMBER
+               | STRING
+               | "true"
+               | "false"
+               | "nil"
+               | "(" expression ")"
+               | IDENTIFIER ;
